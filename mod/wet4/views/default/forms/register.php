@@ -35,52 +35,34 @@ if (elgg_is_sticky_form('register')) {
 $account_exist_message = elgg_echo('registration:userexists');
 ?>
 
-<!--<style>
-	#submit:disabled {
-		background-color: grey;
-	}
-	.c_table {
-		border:1px solid #ccc;
-		background-color:;
-	}
-	.table th,td {
-		padding:10px;
-	}
-	.c_tr2, .c_td2 {
-		padding:10px;
-		text-align: center;
-	}
-</style>-->
-
 <!-- +++ jquery/javascript stuff +++++++++++++++++++++++++++++++++++++++++++ -->
 <script type="text/javascript">
-var frDepartmentsGeds = {};//new Array();
+var frDepartmentsGeds = {};
 var departmentList = new Array();
-var enDepartments = {};//new Array();
+var enDepartments = {};
 	$(document).ready(function() {
-		//enable_submit(false);
 
 		var searchObj = "{\"requestID\" : \"B01\", \"authorizationID\" : \"X4GCCONNEX\"}";
 
-        var frDepartments;
+		var frDepartments;
 
 		$.ajax({
 			type: 'POST',
-            contentType: "application/json",
-            url: 'https://api.sage-geds.gc.ca',
-            data: searchObj,
-            dataType: 'json',
-            success: function (feed) {
+			contentType: "application/json",
+			url: 'https://api.sage-geds.gc.ca',
+			data: searchObj,
+			dataType: 'json',
+			success: function (feed) {
 
-            	var departments = feed.requestResults.departmentList;
-            	for (i=0;i<departments.length; i++){
-            		enDepartments[departments[i].dn] = departments[i].desc;
+				var departments = feed.requestResults.departmentList;
+				for (i=0;i<departments.length; i++){
+					enDepartments[departments[i].dn] = departments[i].desc;
 
-            	}
+				}
 
-            	frDepartments = gedsFrDept();
+				frDepartments = gedsFrDept();
 
-            },// feed - JS object - GEDS result
+			},// feed - JS object - GEDS result
 			error: function(){
 
 			},
@@ -93,32 +75,32 @@ var enDepartments = {};//new Array();
 		var searchObj = "{\"requestID\" : \"B01\", \"authorizationID\" : \"X4GCCONNEX\"}";
 
 		$.ajax({
-        	type: 'POST',
-            contentType: "application/json",
-            url: 'https://api.sage-geds.gc.ca/fr/GAPI/',
-            data: searchObj,
-            dataType: 'json',
-            success: function (feed) {
+			type: 'POST',
+			contentType: "application/json",
+			url: 'https://api.sage-geds.gc.ca/fr/GAPI/',
+			data: searchObj,
+			dataType: 'json',
+			success: function (feed) {
 
-            	var departments = feed.requestResults.departmentList;
-            	for (i=0;i<departments.length; i++){
-            		frDepartmentsGeds[departments[i].dn] = departments[i].desc;
-            	}
+				var departments = feed.requestResults.departmentList;
+				for (i=0;i<departments.length; i++){
+					frDepartmentsGeds[departments[i].dn] = departments[i].desc;
+				}
 
-            },complete: function(){
+			},complete: function(){
 
-        		elgg.action('saveDept',{
-        			data: {
-        				listEn: JSON.stringify(enDepartments),
-        				listFr: JSON.stringify(frDepartmentsGeds),
-        			},
-        			success: function (feed){
+				elgg.action('saveDept',{
+					data: {
+						listEn: JSON.stringify(enDepartments),
+						listFr: JSON.stringify(frDepartmentsGeds),
+					},
+					success: function (feed){
 
-        			}
-        		})
+					}
+				})
 
 			},
-         });
+		 });
 
 	}
 	function check_fields2()
@@ -129,10 +111,7 @@ var enDepartments = {};//new Array();
 		var password1 = $('.password_test').val();
 		var password2 = $('.password2_test').val();
 		var d_name = document.getElementById('name').value;
-		//var toc_val = $('#toc2').checked;
 		var toc_val = $('#toc2').attr("checked");
-		//alert($('#toc2').attr("checked"));
-		//console.log('cyu - '+ toc_val);
 		var is_valid = false;
 		var pop_up_msg = "";
 
@@ -148,59 +127,15 @@ var enDepartments = {};//new Array();
 				}
 			}
 		});
-
-		if (invalid_email != "")
-		{
-			//pop_up_msg += "- "+invalid_email+"\n";
-			is_valid = false;
-		}
-
-		if (email1 != email2)
-		{
-			//pop_up_msg += '<?php //echo elgg_echo('gcRegister:email_mismatch'); ?>\n';
-			is_valid = false;
-		}
-
-		if (password1 != password2)
-		{
-			//pop_up_msg += '<?php //echo elgg_echo('gcRegister:password_mismatch'); ?>\n';
-			is_valid = false;
-		}
-
-		if (password1 == password2 && password1.length < 6)
-		{
-			//pop_up_msg += '<?php //echo elgg_echo('gcRegister:password_too_short'); ?>\n';
-			is_valid = false;
-		}
-
-		if (d_name == "")
-		{
-			//pop_up_msg += '<?php// echo elgg_echo('gcRegister:display_name_is_empty'); ?>\n';
-			is_valid = false;
-		}
-
-		if (toc_val != "checked")
-		{
-			//pop_up_msg += '<?php //echo elgg_echo('gcRegister:toc_error'); ?>\n';
-			is_valid = false;
-		}
-        /*
-		if (!is_valid || pop_up_msg != "")
-		{
-			//alert(pop_up_msg);
-			return false;
-		} else {
-			return true;
-		}*/
 	}
 
 	function validateEmail(email) {
-	    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-	    return re.test(email);
+		var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+		return re.test(email);
 	}
 
 	function endsWith(str, suffix) {
-    	return str.indexOf(suffix, str.length - suffix.length) !== -1;
+		return str.indexOf(suffix, str.length - suffix.length) !== -1;
 	}
 
 	// auto fill function; will auto generate for display name
@@ -234,25 +169,9 @@ var enDepartments = {};//new Array();
 			return str.charAt(0).toUpperCase() + str.substr(1);
 		}
 
-		//document.getElementById('name').value = toProperCase(dName);
 		$('.display_name').val(toProperCase(dName));
 		name.value = dName;
 	}
-
-	function enable_submit(the_state)
-	{/*
-		// we want to enable
-		if (the_state)
-		{
-		    if ($(".submit_test").prop('disabled', true))
-		        $(".submit_test").prop('disabled', false);
-		// we don't want to enable
-		} else {
-
-		    if ($(".submit_test").prop('disabled', false))
-		        $(".submit_test").prop('disabled', true);
-		}
-	*/}
 
 	function validForm()
 	{
@@ -289,180 +208,167 @@ var enDepartments = {};//new Array();
 ?>
 
 </section>
+
 <section class="col-md-6">
-<div class="panel panel-default">
-<header class="panel-heading">
-    <h3 class="panel-title"><?php echo elgg_echo('gcRegister:form'); ?></h3>
-</header>
-<div class="panel-body mrgn-lft-md">
-<div class="form-group">
-    <label for="email_initial" class="required"><span class="field-name"><?php echo elgg_echo('gcRegister:email_initial'); ?></span><strong class="required">(<?php echo elgg_echo('gcRegister:required'); ?>)</strong></label>
-    <font id="email_initial_error" color="red"></font><br />
-    <input type="email" name="email_initial" id="email_initial" value='<?php echo $email ?>' class="form-control" required="required"/>
-</div>
+	<div class="panel panel-default">
+		<header class="panel-heading">
+			<h3 class="panel-title"><?php echo elgg_echo('gcRegister:form'); ?></h3>
+		</header>
+		<div class="panel-body mrgn-lft-md">
+			<div class="form-group">
+				<label for="email_initial" class="required"><span class="field-name"><?php echo elgg_echo('gcRegister:email_initial'); ?></span><strong class="required">(<?php echo elgg_echo('gcRegister:required'); ?>)</strong></label>
+				<font id="email_initial_error" color="red"></font><br />
+				<input type="email" name="email_initial" id="email_initial" value='<?php echo $email ?>' class="form-control" required="required"/>
+			</div>
 
-<div class="form-group">
-	<label for="email" class="required"><span class="field-name"><?php echo elgg_echo('gcRegister:email_secondary'); ?></span><strong class="required">(<?php echo elgg_echo('gcRegister:required'); ?>)</strong></label>
-    <font id="email_secondary_error" color="red"></font><br />
-	<input id="email" class="form-control" type="email" value='<?php echo $email ?>' name="email" onBlur="" required="required"/>
-    <script>
-        $('#email').blur(function () {
-            elgg.action( 'register/ajax', {
-		data: {
-			args: document.getElementById('email').value
-		},
-		success: function (x) {
-		    //create username
-		    $('.username_test').val(x.output);
-           //Nick - Testing here if the username already exists and add a feedback to the user
-		    if(x.output == "<?php echo '> ' . elgg_echo('gcRegister:email_in_use'); ?>"){
-                $('.already-registered-message span').html("<?php echo $account_exist_message; ?>").removeClass('hidden');
-		    } else {
-                $('.already-registered-message span').addClass('hidden');
-		    }
-		    generateDisplayName();
-		    function generateDisplayName() {
-            //generate display name (remove '.' in name)
-                var dName = $('.username_test').val();
+			<div class="form-group">
+				<label for="email" class="required"><span class="field-name"><?php echo elgg_echo('gcRegister:email_secondary'); ?></span><strong class="required">(<?php echo elgg_echo('gcRegister:required'); ?>)</strong></label>
+				<font id="email_secondary_error" color="red"></font><br />
+				<input id="email" class="form-control" type="email" value='<?php echo $email ?>' name="email" onBlur="" required="required"/>
+				<script>
+					$('#email').blur(function () {
+						elgg.action( 'register/ajax', {
+					data: {
+						args: document.getElementById('email').value
+					},
+					success: function (x) {
+						//create username
+						$('.username_test').val(x.output);
+						//Nick - Testing here if the username already exists and add a feedback to the user
+						if(x.output == "<?php echo '> ' . elgg_echo('gcRegister:email_in_use'); ?>"){
+							$('.already-registered-message span').html("<?php echo $account_exist_message; ?>").removeClass('hidden');
+						} else {
+							$('.already-registered-message span').addClass('hidden');
+						}
+						generateDisplayName();
+						function generateDisplayName() {
+							//generate display name (remove '.' in name)
+							var dName = $('.username_test').val();
 
-		            if(dName.indexOf('.')!= false) {
-			            dName = dName.replace(/\./g,' ');
-		            }
+								if(dName.indexOf('.')!= false) {
+									dName = dName.replace(/\./g,' ');
+								}
 
-		            $('.display_name').val(dName);
+								$('.display_name').val(dName);
 
-		    }
-		},   });
-        });
+						}
+					},   });
+					});
 
-    </script>
-</div>
+				</script>
+			</div>
 
-    <div class="return_message">
+			<div class="return_message"></div>
 
+			<div class="form-group">
+				<label for="department" class="required"><span class="field-name"><?php echo elgg_echo('gcRegister:department'); ?></span><strong class="required">(<?php echo elgg_echo('gcRegister:required'); ?>)</strong></label>
+				<?php
+				$obj = elgg_get_entities(array(
+					'type' => 'object',
+					'subtype' => 'dept_list',
+					'owner_guid' => elgg_get_logged_in_user_guid()
+				));
+				$provinces = array();
+				if (get_current_language()=='en'){
+					$departments = $obj[0]->deptsEn;
+					$provinces['pov-alb'] = 'Government of Alberta';
+					$provinces['pov-bc'] = 'Government of British Columbia';
+					$provinces['pov-man'] = 'Government of Manitoba';
+					$provinces['pov-nb'] = 'Government of New Brunswick';
+					$provinces['pov-nfl'] = 'Government of Newfoundland and Labrador';
+					$provinces['pov-ns'] = 'Government of Nova Scotia';
+					$provinces['pov-nwt'] = 'Government of Northwest Territories';
+					$provinces['pov-nun'] = 'Government of Nunavut';
+					$provinces['pov-ont'] = 'Government of Ontario';
+					$provinces['pov-pei'] = 'Government of Prince Edward Island';
+					$provinces['pov-que'] = 'Government of Quebec';
+					$provinces['pov-sask'] = 'Government of Saskatchewan';
+					$provinces['pov-yuk'] = 'Government of Yukon';
+				}else{
+					$departments = $obj[0]->deptsFr;
+					$provinces['pov-alb'] = "Gouvernement de l'Alberta";
+					$provinces['pov-bc'] = 'Gouvernement de la Colombie-Britannique';
+					$provinces['pov-man'] = 'Gouvernement du Manitoba';
+					$provinces['pov-nb'] = 'Gouvernement du Nouveau-Brunswick';
+					$provinces['pov-nfl'] = 'Gouvernement de Terre-Neuve-et-Labrador';
+					$provinces['pov-ns'] = 'Gouvernement de la Nouvelle-Écosse';
+					$provinces['pov-nwt'] = 'Gouvernement du Territoires du Nord-Ouest';
+					$provinces['pov-nun'] = 'Gouvernement du Nunavut';
+					$provinces['pov-ont'] = "Gouvernement de l'Ontario";
+					$provinces['pov-pei'] = "Gouvernement de l'Île-du-Prince-Édouard";
+					$provinces['pov-que'] = 'Gouvernement du Québec';
+					$provinces['pov-sask'] = 'Gouvernement de Saskatchewan';
+					$provinces['pov-yuk'] = 'Gouvernement du Yukon';
+				}
+				$departments = json_decode($departments, true);
+				echo elgg_view('input/select', array(
+					'name' => 'department',
+					'id' => 'department',
+					'class' => 'department_test form-control',
+					'options_values' => array_merge($departments,$provinces),
+				));
+				?>
+			</div>
+			<div class="form-group">
+				<label for="username" class="required"><span class="field-name"><?php echo elgg_echo('gcRegister:username'); ?></span><strong class="required">(<?php echo elgg_echo('gcRegister:required'); ?>)</strong></label>
+				<div class="already-registered-message mrgn-bttm-sm"><span class="label label-danger tags mrgn-bttm-sm"></span></div>
+				<?php
+				echo elgg_view('input/text', array(
+					'name' => 'username',
+					'id' => 'username',
+					'class' => 'username_test form-control',
+					'readonly' => 'readonly',
+					'value' => $username,
+				));
+				?>
+			</div>
 
-    </div>
-<div class="form-group">
-	<label for="department" class="required"><span class="field-name"><?php echo elgg_echo('gcRegister:department'); ?></span><strong class="required">(<?php echo elgg_echo('gcRegister:required'); ?>)</strong></label>
-	<?php
-	$obj = elgg_get_entities(array(
-   		'type' => 'object',
-   		'subtype' => 'dept_list',
-   		'owner_guid' => elgg_get_logged_in_user_guid()
-	));
-	$provinces = array();
-	if (get_current_language()=='en'){
-		//$metaname = "deptsEn";
-		$departments = $obj[0]->deptsEn;
-		$provinces['pov-alb'] = 'Government of Alberta';
-		$provinces['pov-bc'] = 'Government of British Columbia';
-		$provinces['pov-man'] = 'Government of Manitoba';
-		$provinces['pov-nb'] = 'Government of New Brunswick';
-		$provinces['pov-nfl'] = 'Government of Newfoundland and Labrador';
-		$provinces['pov-ns'] = 'Government of Nova Scotia';
-		$provinces['pov-nwt'] = 'Government of Northwest Territories';
-		$provinces['pov-nun'] = 'Government of Nunavut';
-		$provinces['pov-ont'] = 'Government of Ontario';
-		$provinces['pov-pei'] = 'Government of Prince Edward Island';
-		$provinces['pov-que'] = 'Government of Quebec';
-		$provinces['pov-sask'] = 'Government of Saskatchewan';
-		$provinces['pov-yuk'] = 'Government of Yukon';
-	}else{
-		//$metaname = "deptsFr";
-		$departments = $obj[0]->deptsFr;
-		$provinces['pov-alb'] = "Gouvernement de l'Alberta";
-		$provinces['pov-bc'] = 'Gouvernement de la Colombie-Britannique';
-		$provinces['pov-man'] = 'Gouvernement du Manitoba';
-		$provinces['pov-nb'] = 'Gouvernement du Nouveau-Brunswick';
-		$provinces['pov-nfl'] = 'Gouvernement de Terre-Neuve-et-Labrador';
-		$provinces['pov-ns'] = 'Gouvernement de la Nouvelle-Écosse';
-		$provinces['pov-nwt'] = 'Gouvernement du Territoires du Nord-Ouest';
-		$provinces['pov-nun'] = 'Gouvernement du Nunavut';
-		$provinces['pov-ont'] = "Gouvernement de l'Ontario";
-		$provinces['pov-pei'] = "Gouvernement de l'Île-du-Prince-Édouard";
-		$provinces['pov-que'] = 'Gouvernement du Québec';
-		$provinces['pov-sask'] = 'Gouvernement de Saskatchewan';
-		$provinces['pov-yuk'] = 'Gouvernement du Yukon';
-	}
-	$departments = json_decode($departments, true);
-	//$departments['ont'] = 'ontario';
-	//echo "lang".get_current_language();
-	//$departments = $meta[0]->value;//array(1, 2, 3);
-	echo elgg_view('input/select', array(
-		'name' => 'department',
-		'id' => 'department',
-        //'disabled'=>'disabled',
-        'class' => 'department_test form-control',
-		'options_values' => array_merge($departments,$provinces),
-	));
-	?>
-</div>
-<div class="form-group">
-	<label for="username" class="required"><span class="field-name"><?php echo elgg_echo('gcRegister:username'); ?></span><strong class="required">(<?php echo elgg_echo('gcRegister:required'); ?>)</strong></label>
-    <div class="already-registered-message mrgn-bttm-sm"><span class="label label-danger tags mrgn-bttm-sm"></span></div>
-	<?php
-	echo elgg_view('input/text', array(
-		'name' => 'username',
-		'id' => 'username',
-        //'disabled'=>'disabled',
-        'class' => 'username_test form-control',
-		'readonly' => 'readonly',
-		'value' => $username,
-	));
-	?>
-</div>
+			<div class="form-group">
+				<label for="password" class="required"><span class="field-name"><span class="field-name"><?php echo elgg_echo('gcRegister:password_initial'); ?></span><strong class="required">(<?php echo elgg_echo('gcRegister:required'); ?>)</strong></label>
+				<font id="password_initial_error" color="red"></font><br />
+				<?php
+				echo elgg_view('input/password', array(
+					'name' => 'password',
+					'id' => 'password',
+					'required '=> "required",
+				'class'=>'password_test form-control',
+					'value' => $password,
+				));
+				?>
+			</div>
 
-<div class="form-group">
-	<label for="password" class="required"><span class="field-name"><span class="field-name"><?php echo elgg_echo('gcRegister:password_initial'); ?></span><strong class="required">(<?php echo elgg_echo('gcRegister:required'); ?>)</strong></label>
-	<font id="password_initial_error" color="red"></font><br />
-	<?php
-	echo elgg_view('input/password', array(
-		'name' => 'password',
-		'id' => 'password',
-		'required '=> "required",
-    'class'=>'password_test form-control',
-		'value' => $password,
-	));
-	?>
-</div>
-
-<div class="form-group">
-	<label for="password2" class="required"><span class="field-name"><?php echo elgg_echo('gcRegister:password_secondary'); ?></span><strong class="required">(<?php echo elgg_echo('gcRegister:required'); ?>)</strong></label>
-    <font id="password_secondary_error" color="red"></font><br />
-	<?php
-	echo elgg_view('input/password', array(
-		'name' => 'password2',
-		'value' => $password2,
-		'id' => 'password2',
-		'required '=> "required",
-    'class'=>'password2_test form-control',
-	));
-	?>
-</div>
+			<div class="form-group">
+				<label for="password2" class="required"><span class="field-name"><?php echo elgg_echo('gcRegister:password_secondary'); ?></span><strong class="required">(<?php echo elgg_echo('gcRegister:required'); ?>)</strong></label>
+				<font id="password_secondary_error" color="red"></font><br />
+				<?php
+				echo elgg_view('input/password', array(
+					'name' => 'password2',
+					'value' => $password2,
+					'id' => 'password2',
+					'required '=> "required",
+				'class'=>'password2_test form-control',
+				));
+				?>
+			</div>
 
 
-<div class="form-group">
-	<label for="name" class="required"><span class="field-name"><?php echo elgg_echo('gcRegister:display_name'); ?></span><strong class="required">(<?php echo elgg_echo('gcRegister:required'); ?>)</strong> </label>
-	<?php
-	echo elgg_view('input/text', array(
-		'name' => 'name',
-		'id' => 'name',
-        'class' => 'form-control display_name',
-		'value' => $name,
-	));
-	?>
+			<div class="form-group">
+				<label for="name" class="required"><span class="field-name"><?php echo elgg_echo('gcRegister:display_name'); ?></span><strong class="required">(<?php echo elgg_echo('gcRegister:required'); ?>)</strong> </label>
+				<?php
+				echo elgg_view('input/text', array(
+					'name' => 'name',
+					'id' => 'name',
+					'class' => 'form-control display_name',
+					'value' => $name,
+				));
+				?>
+			</div>
 
-</div>
-    <div class="alert alert-info"><?php echo elgg_echo('gcRegister:display_name_notice'); ?></div>
-<?php
-//echo elgg_view('input/checkboxes', array(
-//    'name' => 'toc2',
-//    'id' => 'toc2',
-//    'options' => array(elgg_echo('gcRegister:terms_and_conditions') => 1)));
-?>
-    <div class="checkbox">
-        <label><input type="checkbox" value="1" name="toc2" id="toc2" required="required'"/><?php echo elgg_echo('gcRegister:terms_and_conditions')?></label>
-    </div>
+			<div class="alert alert-info"><?php echo elgg_echo('gcRegister:display_name_notice'); ?></div>
+			<div class="checkbox">
+				<label><input type="checkbox" value="1" name="toc2" id="toc2" required="required'"/><?php echo elgg_echo('gcRegister:terms_and_conditions')?></label>
+			</div>
+
 <?php
 // view to extend to add more fields to the registration form
 echo elgg_view('register/extend', $vars);
@@ -473,139 +379,112 @@ echo elgg_view('input/hidden', array('name' => 'friend_guid', 'value' => $vars['
 echo elgg_view('input/hidden', array('name' => 'invitecode', 'value' => $vars['invitecode']));
 // note: disable
 echo elgg_view('input/submit', array(
-    'name' => 'submit',
-    'value' => elgg_echo('gcRegister:register'),
-    'id' => 'submit',
-    'class'=>'submit_test btn-primary',
-    'onclick' => 'return check_fields2();'));
+	'name' => 'submit',
+	'value' => elgg_echo('gcRegister:register'),
+	'id' => 'submit',
+	'class'=>'submit_test btn-primary',
+	'onclick' => 'return check_fields2();'));
 echo '</div>';
 echo '<center>'.elgg_echo('gcRegister:tutorials_notice').'</center>';
 echo '<br/>';
 ?>
-            </div>
-        </div>
+
+		</div>
+	</div>
 </section>
 
-
-
 <script>
-	//$("<input>").on("focus", function() {
-		$('#email_initial').on("keydown",function(e) {
-			return e.which !== 32;
-		});
+	$('#email_initial').on("keydown",function(e) {
+		return e.which !== 32;
+	});
 
-		$('#email').on("keydown",function(e) {
-			return e.which !== 32;
-		});
-	//});
+	$('#email').on("keydown",function(e) {
+		return e.which !== 32;
+	});
 
+	$('#email_initial').on("focusout", function() {
+		var val = $(this).attr('value');
+		if ( val === '' ) {
+			var c_err_msg = '<?php echo elgg_echo('gcRegister:empty_field') ?>';
+			document.getElementById('email_initial_error').innerHTML = c_err_msg;
+		}
+		else if ( val !== '' ) {
+			document.getElementById('email_initial_error').innerHTML = '';
 
-	//$('<input>').on("focus", function() {
-	    $('#email_initial').on("focusout", function() {
-	    	//enable_submit(validForm());
-	    	var val = $(this).attr('value');
-	        if ( val === '' ) {
-	        	var c_err_msg = '<?php echo elgg_echo('gcRegister:empty_field') ?>';
-	            document.getElementById('email_initial_error').innerHTML = c_err_msg;
-	        }
-	        else if ( val !== '' ) {
-	            document.getElementById('email_initial_error').innerHTML = '';
+			if (!validateEmail(val)) {
+				var c_err_msg = '<?php echo elgg_echo('gcRegister:invalid_email') ?>';
+				document.getElementById('email_initial_error').innerHTML = c_err_msg;
+			}
+		}
 
-	            if (!validateEmail(val)) {
-	            	var c_err_msg = '<?php echo elgg_echo('gcRegister:invalid_email') ?>';
-	            	document.getElementById('email_initial_error').innerHTML = c_err_msg;
-	            }
-	        }
+		var val_2 = $('#email').attr('value');
+		if (val_2 == val) {
+			document.getElementById('email_secondary_error').innerHTML = '';
+		}
+	});
 
-            var val_2 = $('#email').attr('value');
-            if (val_2 == val) {
+	$('#email').on("focusout", function() {
+		var val = $(this).attr('value');
+		if ( val === '' ) {
+			var c_err_msg = "<?php echo elgg_echo('gcRegister:empty_field') ?>";
+			document.getElementById('email_secondary_error').innerHTML = c_err_msg;
+		}
+		else if ( val !== '' ) {
+			document.getElementById('email_secondary_error').innerHTML = '';
 
-		        	document.getElementById('email_secondary_error').innerHTML = '';
+			var val2 = $('#email_initial').attr('value');
+			if (val2.toLowerCase() != val.toLowerCase())
+			{
+				var c_err_msg = "<?php echo elgg_echo('gcRegister:mismatch') ?>";
+				document.getElementById('email_secondary_error').innerHTML = c_err_msg;
+			}
+		}
+	});
 
-            }
-	    });
+	$('.password_test').on("focusout", function() {
+		var val = $(this).val();
+		if ( val === '' ) {
+			var c_err_msg = "<?php echo elgg_echo('gcRegister:empty_field') ?>";
+			document.getElementById('password_initial_error').innerHTML = c_err_msg;
+		}
+		else if ( val !== '' ) {
+			document.getElementById('password_initial_error').innerHTML = '';
+		}
 
-		$('#toc2').click(function() {
-	    	if ($('#toc2:checked').val() == 1)
-	    	{
-	    		//enable_submit(validForm());
-	    	}
-	    });
+		var val_2 = $('#password2').attr('value');
 
-	    $('#email').on("focusout", function() {
-	    	//enable_submit(validForm());
-	    	var val = $(this).attr('value');
-		    if ( val === '' ) {
-		    	var c_err_msg = "<?php echo elgg_echo('gcRegister:empty_field') ?>";
-		        document.getElementById('email_secondary_error').innerHTML = c_err_msg;
-		    }
-		    else if ( val !== '' ) {
-		        document.getElementById('email_secondary_error').innerHTML = '';
+		if (val_2 == val) {
+			document.getElementById('password_secondary_error').innerHTML = '';
+		} else if (val_2 !== '' && val_2 != val) {
+			var c_err_msg = "<?php echo elgg_echo('gcRegister:mismatch') ?>";
+			document.getElementById('password_secondary_error').innerHTML = c_err_msg;
+		}
+	});
 
-		        var val2 = $('#email_initial').attr('value');
-		        if (val2.toLowerCase() != val.toLowerCase())
-		        {
-		        	var c_err_msg = "<?php echo elgg_echo('gcRegister:mismatch') ?>";
-		        	document.getElementById('email_secondary_error').innerHTML = c_err_msg;
-		        }
-		    }
-		});
+	$('#password2').on("focusout", function() {
+		var val = $(this).val();
+		if ( val === '' ) {
+			var c_err_msg = "<?php echo elgg_echo('gcRegister:empty_field') ?>";
+			document.getElementById('password_secondary_error').innerHTML = c_err_msg;
+		}
+		else if ( val !== '' ) {
+			document.getElementById('password_secondary_error').innerHTML = '';
 
-	    $('.password_test').on("focusout", function() {
-	    	//enable_submit(validForm());
-	    	var val = $(this).val();
-		    if ( val === '' ) {
-		    	var c_err_msg = "<?php echo elgg_echo('gcRegister:empty_field') ?>";
-		        document.getElementById('password_initial_error').innerHTML = c_err_msg;
-		    }
-		    else if ( val !== '' ) {
-		        document.getElementById('password_initial_error').innerHTML = '';
-		    }
+			var val2 = $('.password_test').val();
+			if (val2 != val)
+			{
+				var c_err_msg = "<?php echo elgg_echo('gcRegister:mismatch') ?>";
+				document.getElementById('password_secondary_error').innerHTML = c_err_msg;
+			}
+		}
+	});
 
-	        var val_2 = $('#password2').attr('value');
-
-            if (val_2 == val) {
-
-		        	document.getElementById('password_secondary_error').innerHTML = '';
-
-            } else if (val_2 !== '' && val_2 != val) {
-                var c_err_msg = "<?php echo elgg_echo('gcRegister:mismatch') ?>";
-		        	document.getElementById('password_secondary_error').innerHTML = c_err_msg;
-            }
-		});
-
-	    $('#password2').on("focusout", function() {
-	    	//enable_submit(validForm());
-	    	var val = $(this).val();
-		    if ( val === '' ) {
-		    	var c_err_msg = "<?php echo elgg_echo('gcRegister:empty_field') ?>";
-		        document.getElementById('password_secondary_error').innerHTML = c_err_msg;
-		    }
-		    else if ( val !== '' ) {
-		        document.getElementById('password_secondary_error').innerHTML = '';
-
-		        var val2 = $('.password_test').val();
-		        if (val2 != val)
-		        {
-		        	var c_err_msg = "<?php echo elgg_echo('gcRegister:mismatch') ?>";
-		        	document.getElementById('password_secondary_error').innerHTML = c_err_msg;
-		        }
-		    }
-		});
-
-	    $('#department_name').on("focusout", function() {
-	    	//enable_submit(validForm());
-	    	var val = $(this).val();
-		    if ( val === '' ) {
-		    	var c_err_msg = "<?php echo elgg_echo('gcRegister:empty_field') ?>";
-		        //document.getElementById('department_error').innerHTML = c_err_msg;
-		    }
-		    else if ( val !== '' ) {
-		        //document.getElementById('department_error').innerHTML = '';
-		    }
-		});
-	//});
-
+	$('#department_name').on("focusout", function() {
+		var val = $(this).val();
+		if ( val === '' ) {
+			var c_err_msg = "<?php echo elgg_echo('gcRegister:empty_field') ?>";
+		}
+	});
 
 </script>
 </div>
